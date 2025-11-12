@@ -1,0 +1,10 @@
+usuario (1) ──── (N) dispositivo
+usuario (1) ──── (N) pedido
+usuario (1) ──── (1) carrito
+dispositivo (N) ──── (1) marca
+dispositivo (N) ──── (1) categoria
+dispositivo (1) ──── (N) imagen_dispositivo
+dispositivo (1) ──── (N) puja
+pedido (1) ──── (N) detalle_pedido
+carrito (1) ──── (N) item_carrito
+categoria (1) ──── (N) categoria (auto-referencia)

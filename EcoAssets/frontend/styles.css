@@ -75,6 +75,11 @@ nav button:hover {
     cursor: pointer;
 }
 
+.subicon {
+    width: 35px;
+    cursor: pointer;
+}
+
 /* MAIN */
 main {
     padding: 20px;
