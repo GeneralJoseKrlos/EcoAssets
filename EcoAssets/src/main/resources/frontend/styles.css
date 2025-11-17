@@ -1,0 +1,208 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f7f7f7;
+    color: #2D393C;
+}
+
+/* HEADER */
+header {
+    background-color: #066819;
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 80px;
+    margin-right: 15px;
+}
+
+.slogan {
+    font-size: 14px;
+    font-style: italic;
+    color: #e8e8e8;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+}
+
+nav input {
+    flex: 1;
+    height: 45px;
+    font-size: 16px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+nav button {
+    background-color: #066819;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+nav button:hover {
+    background-color: #08B12A;
+}
+
+.icon {
+    width: 35px;
+    cursor: pointer;
+}
+
+.subicon {
+    width: 35px;
+    cursor: pointer;
+}
+
+/* MAIN */
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+/* CATEGORÍAS */
+.category-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.category-list button {
+    background-color: #066819;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category-list button:hover {
+    background-color: #08B12A;
+}
+
+/* SCROLLS */
+.horizontal-scroll {
+    background-color: #f9f9f4;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.horizontal-scroll .scroll-container {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    justify-content: center;
+}
+
+.horizontal-scroll .scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.horizontal-scroll .scroll-container::-webkit-scrollbar-thumb {
+    background: #066819;
+    border-radius: 10px;
+}
+
+/* PRODUCTOS */
+.gbimg {
+    width: 20%;
+    height: 20%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.product {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 220px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.product:hover {
+    transform: scale(1.03);
+}
+
+.product img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+/* SECCIONES INFERIORES */
+.categories-bottom {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.categories-bottom button {
+    flex: 1 1 180px;
+    background-color: #066819;
+    color: white;
+    padding: 16px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.categories-bottom button:hover {
+    background-color: #08B12A;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    background-color: #2D393C;
+    color: white;
+    padding: 15px;
+}
+
+.clickable-title {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.clickable-title:hover {
+    color: #08B12A;
+}

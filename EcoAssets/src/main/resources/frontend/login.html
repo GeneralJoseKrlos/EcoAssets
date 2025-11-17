@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="img/icon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión / Registrarse - EcoAssets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #066819, #08B12A);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+        }
+
+        .form-side {
+            flex: 1;
+            padding: 50px 40px;
+        }
+
+        .info-side {
+            flex: 1;
+            background: linear-gradient(135deg, #066819, #08B12A);
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #066819;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: #066819;
+            border-bottom-color: #066819;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #066819;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #066819, #08B12A);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 104, 25, 0.4);
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message.error {
+            background-color: #ffe5e5;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+        }
+
+        .message.success {
+            background-color: #e5ffe5;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+        }
+
+        .info-side h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .info-side ul {
+            list-style: none;
+        }
+
+        .info-side li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .info-side li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #066819;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .info-side {
+                order: -1;
+                padding: 30px 20px;
+            }
+
+            .form-side {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-side">
+            <div class="logo">
+                <h1><img src="img/logo-full.png" alt="logo" width="273" height="72"></h1>
+                <p>Compra y vende tecnología sostenible</p>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('login')">Iniciar Sesión</div>
+                <div class="tab" onclick="switchTab('registro')">Registrarse</div>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <!-- FORMULARIO DE LOGIN -->
+            <div id="loginForm" class="form-container active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginCorreo">Correo Electrónico</label>
+                        <input type="email" id="loginCorreo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Iniciar Sesión</button>
+                </form>
+            </div>
+
+            <!-- FORMULARIO DE REGISTRO -->
+            <div id="registroForm" class="form-container">
+                <form onsubmit="handleRegistro(event)">
+                    <div class="form-group">
+                        <label for="regNombre">Nombre de Usuario</label>
+                        <input type="text" id="regNombre" required minlength="3">
+                        <small>Debe ser único, mínimo 3 caracteres</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regCorreo">Correo Electrónico</label>
+                        <input type="email" id="regCorreo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regCelular">Número de Celular</label>
+                        <input type="tel" id="regCelular" required pattern="[0-9]{10}">
+                        <small>10 dígitos sin espacios</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Contraseña</label>
+                        <input type="password" id="regPassword" required minlength="6">
+                        <small>Mínimo 6 caracteres</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPasswordConfirm">Confirmar Contraseña</label>
+                        <input type="password" id="regPasswordConfirm" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Crear Cuenta</button>
+                </form>
+            </div>
+
+            <div class="back-link">
+                <a href="index.html">← Volver al inicio</a>
+            </div>
+        </div>
+
+        <div class="info-side">
+            <h2>¿Por qué EcoAssets?</h2>
+            <ul>
+                <li>Compra y vende tecnología de forma segura</li>
+                <li>Sistema de subastas transparente</li>
+                <li>Dispositivos especiales y coleccionables</li>
+                <li>Vendedores verificados</li>
+                <li>Precios competitivos</li>
+                <li>Contribuye a la economía circular</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080/api';
+
+        function switchTab(tab) {
+            // Cambiar tabs activas
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Cambiar formularios
+            document.querySelectorAll('.form-container').forEach(f => f.classList.remove('active'));
+
+            if (tab === 'login') {
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.getElementById('registroForm').classList.add('active');
+            }
+
+            // Limpiar mensaje
+            hideMessage();
+        }
+
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+        }
+
+        function hideMessage() {
+            document.getElementById('message').style.display = 'none';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const correo = document.getElementById('loginCorreo').value;
+            const contrasena = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch(`${API_URL}/usuarios/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ correo, contrasena })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Guardar datos del usuario en localStorage
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
+                    showMessage('¡Bienvenido! Redirigiendo...', 'success');
+
+                    setTimeout(() => {
+                        if (data.usuario.esAdmin) {
+                            window.location.href = 'admin.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1500);
+                } else {
+                    const error = await response.text();
+                    showMessage(error || 'Error al iniciar sesión', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Error de conexión con el servidor', 'error');
+            }
+        }
+
+        async function handleRegistro(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('regNombre').value;
+            const correo = document.getElementById('regCorreo').value;
+            const celular = document.getElementById('regCelular').value;
+            const contrasena = document.getElementById('regPassword').value;
+            const confirmar = document.getElementById('regPasswordConfirm').value;
+
+            // Validar que las contraseñas coincidan
+            if (contrasena !== confirmar) {
+                showMessage('Las contraseñas no coinciden', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/usuarios/registro`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nombre,
+                        correo,
+                        celular,
+                        contrasena
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.', 'success');
+
+                    // Limpiar formulario
+                    event.target.reset();
+
+                    // Cambiar a tab de login después de 2 segundos
+                    setTimeout(() => {
+                        document.querySelectorAll('.tab')[0].click();
+                    }, 2000);
+                } else {
+                    const error = await response.text();
+                    showMessage(error || 'Error al crear la cuenta', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Error de conexión con el servidor', 'error');
+            }
+        }
+
+        // Verificar si ya hay sesión iniciada
+        window.addEventListener('load', () => {
+            const usuario = localStorage.getItem('usuario');
+            if (usuario) {
+                const userData = JSON.parse(usuario);
+                if (userData.esAdmin) {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

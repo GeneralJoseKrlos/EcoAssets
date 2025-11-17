@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="img/icon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoAssets - Compra y Venta de Tecnología</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            color: #2D393C;
+        }
+
+        /* HEADER */
+        header {
+            background-color: #066819;
+            color: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo img {
+            height: 70px;
+        }
+
+        .search-container {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            min-width: 300px;
+        }
+
+        .search-container input {
+            flex: 1;
+            height: 45px;
+            font-size: 16px;
+            padding: 0 15px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        .search-container button {
+            background-color: #08B12A;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #06961f;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-icons a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .nav-icons a:hover {
+            opacity: 0.8;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* CARRUSEL*/
+        .banner-container {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            height: 450px;
+            margin: 30px auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .banner-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .banner-slide.active {
+            opacity: 1;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 30px;
+        }
+
+        .banner-overlay h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .banner-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .banner-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .banner-dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* CATEGORÍAS */
+        .categories {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .category-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-list button {
+            background-color: #066819;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .category-list button:hover {
+            background-color: #08B12A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(6, 104, 25, 0.3);
+        }
+
+        /* SECCIONES DE PRODUCTOS */
+        main {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 28px;
+            color: #066819;
+            margin: 30px 0 20px 0;
+            cursor: pointer;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .section-title:hover {
+            color: #08B12A;
+        }
+
+        .horizontal-scroll {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .scroll-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 15px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #066819;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #08B12A;
+        }
+
+        /* PRODUCTOS */
+        .product {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-width: 240px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border-color: #08B12A;
+        }
+
+        .product img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .product h3 {
+            font-size: 16px;
+            color: #2D393C;
+            margin: 10px 0;
+            min-height: 40px;
+        }
+
+        .product .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #066819;
+            margin: 10px 0;
+        }
+
+        .product .badge {
+            display: inline-block;
+            background-color: #08B12A;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* BOTONES INFERIORES */
+        .bottom-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+            padding: 0 20px;
+        }
+
+        .bottom-categories button {
+            background: linear-gradient(135deg, #066819, #08B12A);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-categories button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(6, 104, 25, 0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            background-color: #2D393C;
+            color: white;
+            padding: 25px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .banner-container {
+                height: 300px;
+            }
+
+            .banner-overlay h2 {
+                font-size: 24px;
+            }
+
+            .category-list {
+                gap: 10px;
+            }
+
+            .category-list button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="img/logo.png" alt="Logo EcoAssets">
+            </div>
+            <div class="search-container">
+                <input type="text" placeholder="Buscar productos, vendedores o categorías...">
+                <button>Buscar</button>
+            </div>
+            <div class="nav-icons">
+                <a href="login.html" title="Iniciar Sesión">
+                    <span style="margin-right: 5px;"><img src="img/user-icon.png" alt="Perfil" class="icon"></span>
+                </a>
+                <a href="carrito.html" title="Carrito">
+                    <span style="font-size: 24px;"><img src="img/trolley-icon.png" alt="Carrito" class="icon"></span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- BANNER ROTATIVO -->
+    <div class="banner-container">
+        <div class="banner-slide active">
+            <img src="img/banner1.jpg" alt="Promoción Gaming">
+            <div class="banner-overlay">
+                <h2>🎮 Promoción Gaming</h2>
+                <p>Hasta 30% de descuento en consolas y juegos</p>
+            </div>
+        </div>
+        <div class="banner-slide">
+            <img src="img/banner2.jpg" alt="Especiales Retro">
+            <div class="banner-overlay">
+                <h2>⭐ Especiales Retro</h2>
+                <p>Dispositivos coleccionables únicos</p>
+            </div>
+        </div>
+        <div class="banner-slide">
+            <img src="img/banner3.jpg" alt="Ofertas del Mes">
+            <div class="banner-overlay">
+                <h2>💰 Ofertas del Mes</h2>
+                <p>Descuentos increíbles en tecnología</p>
+            </div>
+        </div>
+        <div class="banner-slide">
+            <img src="img/banner4.jpg" alt="Nuevos Ingresos">
+            <div class="banner-overlay">
+                <h2>🆕 Nuevos Ingresos</h2>
+                <p>Los últimos dispositivos en EcoAssets</p>
+            </div>
+        </div>
+        <div class="banner-controls">
+            <span class="banner-dot active" data-slide="0"></span>
+            <span class="banner-dot" data-slide="1"></span>
+            <span class="banner-dot" data-slide="2"></span>
+            <span class="banner-dot" data-slide="3"></span>
+        </div>
+    </div>
+
+    <main>
+        <!-- CATEGORÍAS -->
+        <section class="categories">
+            <div class="category-list">
+                <button>📱 Teléfonos</button>
+                <button>🎧 Audio</button>
+                <button>📺 Video</button>
+                <button>⌚ Relojes</button>
+                <button>💻 Computadores</button>
+                <button>🎮 Consolas y Juegos</button>
+                <button>📹 Grabación</button>
+            </div>
+        </section>
+
+        <!-- DISPOSITIVOS ESPECIALES -->
+        <section class="horizontal-scroll">
+            <h2 class="section-title" onclick="location.href='special.html'">
+                ⭐ Dispositivos Especiales del Día
+            </h2>
+            <div class="scroll-container">
+                <div class="product" onclick="location.href='product.html?id=1'">
+                    <img src="img/retro1.jpg" alt="GameBoy Color">
+                    <span class="badge">ESPECIAL</span>
+                    <h3>GameBoy Color Edición Pikachu</h3>
+                    <p class="price">$900,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=2'">
+                    <img src="img/retro2.jpg" alt="Walkman">
+                    <span class="badge">ESPECIAL</span>
+                    <h3>Walkman Sony 1987</h3>
+                    <p class="price">$650,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=3'">
+                    <img src="img/retro3.jpg" alt="iPod">
+                    <span class="badge">ESPECIAL</span>
+                    <h3>iPod Classic 2005</h3>
+                    <p class="price">$700,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=4'">
+                    <img src="img/retro4.jpg" alt="Atari">
+                    <span class="badge">ESPECIAL</span>
+                    <h3>Consola Atari 2600</h3>
+                    <p class="price">$1,300,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=5'">
+                    <img src="img/retro5.jpg" alt="Macintosh">
+                    <span class="badge">ESPECIAL</span>
+                    <h3>Macintosh SE 1987</h3>
+                    <p class="price">$2,800,000</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTOS DESTACADOS -->
+        <section class="horizontal-scroll">
+            <h2 class="section-title">🔥 Productos Destacados</h2>
+            <div class="scroll-container">
+                <div class="product" onclick="location.href='product.html?id=10'">
+                    <img src="img/placeholder1.jpg" alt="iPhone">
+                    <h3>iPhone 11 - Buen estado</h3>
+                    <p class="price">$1,200,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=11'">
+                    <img src="img/placeholder2.jpg" alt="PS4">
+                    <h3>PS4 - Usada, funcional</h3>
+                    <p class="price">$800,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=12'">
+                    <img src="img/placeholder3.jpg" alt="Smartwatch">
+                    <h3>Smartwatch Samsung</h3>
+                    <p class="price">$350,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=13'">
+                    <img src="img/placeholder4.jpg" alt="TV">
+                    <h3>Televisor Sony 4K</h3>
+                    <p class="price">$2,400,000</p>
+                </div>
+                <div class="product" onclick="location.href='product.html?id=14'">
+                    <img src="img/placeholder5.jpg" alt="Tablet">
+                    <h3>Tablet Huawei M5</h3>
+                    <p class="price">$600,000</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTONES DE NAVEGACIÓN -->
+        <div class="bottom-categories">
+            <button onclick="location.href='nuevos.html'">🆕 Productos Nuevos</button>
+            <button onclick="location.href='special.html'">⭐ Especiales</button>
+            <button onclick="location.href='subastas.html'">⚡ Subastas Activas</button>
+            <button onclick="location.href='ofertas.html'">💰 Ofertas</button>
+            <button onclick="location.href='vendedores.html'">👥 Mejores Vendedores</button>
+            <button onclick="location.href='tiendas.html'">✅ Tiendas Verificadas</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 GeneticallyEnhancedNation | © 2025 EcoAssets | Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // CARRUSEL
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const dots = document.querySelectorAll('.banner-dot');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Rotar cada 5 segundos el carrusel
+        setInterval(nextSlide, 5000);
+
+        // Clickear en los puntos
+        dots.forEach(dot => {
+            dot.addEventListener('click', function () {
+                currentSlide = parseInt(this.getAttribute('data-slide'));
+                showSlide(currentSlide);
+            });
+        });
+    </script>
+</body>
+
+</html>
